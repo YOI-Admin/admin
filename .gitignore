@@ -42,6 +42,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# ide
+# idea files
 .idea
-.vscode

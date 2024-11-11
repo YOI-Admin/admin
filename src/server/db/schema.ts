@@ -4,11 +4,9 @@ import {
   integer,
   pgTableCreator,
   primaryKey,
-  serial,
   text,
   timestamp,
   varchar,
-  boolean,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -18,51 +16,26 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `admin_${name}`);
+export const createTable = pgTableCreator((name) => `yoi-admin_${name}`);
 
-export const opportunityPosts = createTable(
-  "opportunityPost",
+export const posts = createTable(
+  "post",
   {
-    // info not to be displayed on main page
-    id: serial("id").primaryKey(),
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    name: varchar("name", { length: 256 }),
     createdById: varchar("created_by", { length: 255 })
-    .notNull()
-    .references(() => users.id),
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
       () => new Date()
     ),
-    
-    // implement OpportunityInfo
-    title: varchar("name", { length: 256 }),
-    posted: timestamp("posted", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-    deadline: timestamp("deadline", { withTimezone: true })
-    .default(sql`'9999-12-31'`)
-    .notNull(),
-    description: text("description"),
-    location: varchar("location", { length: 255 }),
-    providerName: varchar("provider_name", { length: 255 }),
-    providerImage: varchar("provider_image", { length: 255 }),
-    providerUrl: varchar("provider_url", { length: 255 }),
-    link: varchar("link", { length: 255 }),
-    allAges: boolean("all_ages")
-    .default(false)
-    .notNull(),
-    minAge: integer("min_age")
-    .default(0)
-    .notNull(),
-    maxAge: integer("max_age")
-    .default(99)
-    .notNull(),
-    open: boolean("open")
-    .default(true)
-    .notNull(),
-    tags: text("tags").$type<string[]>(),
   },
   (example) => ({
     createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.title),
+    nameIndex: index("name_idx").on(example.name),
   })
 );
 
@@ -78,7 +51,6 @@ export const users = createTable("user", {
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
-  permissions: text("permissions").$type<string[]>(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
