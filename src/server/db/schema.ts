@@ -18,12 +18,13 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `admin_${name}`);
 
-export const posts = createTable(
-  "post",
+export const blogPosts = createTable(
+  "blog_post",
   {
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("created_by", { length: 255 })
+    title: varchar("title", { length: 256 }).notNull(),
+    content: text("content").notNull(),
+    authorId: varchar("author_id", { length: 255 })
       .notNull()
       .references(() => users.id),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -33,9 +34,9 @@ export const posts = createTable(
       () => new Date()
     ),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
+  (blogPost) => ({
+    authorIdIdx: index("author_id_idx").on(blogPost.authorId),
+    titleIndex: index("title_idx").on(blogPost.title),
   })
 );
 

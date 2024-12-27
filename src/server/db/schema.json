@@ -1,0 +1,205 @@
+{
+    "tables": {
+      "posts": {
+        "columns": {
+          "id": {
+            "type": "integer",
+            "primaryKey": true,
+            "generatedByDefaultAsIdentity": true
+          },
+          "name": {
+            "type": "varchar",
+            "length": 256
+          },
+          "createdById": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true,
+            "references": "users.id"
+          },
+          "createdAt": {
+            "type": "timestamp",
+            "withTimezone": true,
+            "default": "CURRENT_TIMESTAMP",
+            "notNull": true
+          },
+          "updatedAt": {
+            "type": "timestamp",
+            "withTimezone": true,
+            "onUpdate": "new Date()"
+          }
+        },
+        "indexes": {
+          "createdByIdIdx": {
+            "columns": ["createdById"]
+          },
+          "nameIndex": {
+            "columns": ["name"]
+          }
+        }
+      },
+      "users": {
+        "columns": {
+          "id": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true,
+            "primaryKey": true,
+            "defaultFn": "crypto.randomUUID()"
+          },
+          "name": {
+            "type": "varchar",
+            "length": 255
+          },
+          "email": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "emailVerified": {
+            "type": "timestamp",
+            "mode": "date",
+            "withTimezone": true,
+            "default": "CURRENT_TIMESTAMP"
+          },
+          "image": {
+            "type": "varchar",
+            "length": 255
+          }
+        },
+        "relations": {
+          "accounts": {
+            "type": "many",
+            "table": "accounts"
+          }
+        }
+      },
+      "accounts": {
+        "columns": {
+          "userId": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true,
+            "references": "users.id"
+          },
+          "type": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "provider": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "providerAccountId": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "refresh_token": {
+            "type": "text"
+          },
+          "access_token": {
+            "type": "text"
+          },
+          "expires_at": {
+            "type": "integer"
+          },
+          "token_type": {
+            "type": "varchar",
+            "length": 255
+          },
+          "scope": {
+            "type": "varchar",
+            "length": 255
+          },
+          "id_token": {
+            "type": "text"
+          },
+          "session_state": {
+            "type": "varchar",
+            "length": 255
+          }
+        },
+        "indexes": {
+          "compoundKey": {
+            "columns": ["provider", "providerAccountId"],
+            "primaryKey": true
+          },
+          "userIdIdx": {
+            "columns": ["userId"]
+          }
+        },
+        "relations": {
+          "user": {
+            "type": "one",
+            "table": "users",
+            "fields": ["userId"],
+            "references": ["id"]
+          }
+        }
+      },
+      "sessions": {
+        "columns": {
+          "sessionToken": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true,
+            "primaryKey": true
+          },
+          "userId": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true,
+            "references": "users.id"
+          },
+          "expires": {
+            "type": "timestamp",
+            "mode": "date",
+            "withTimezone": true,
+            "notNull": true
+          }
+        },
+        "indexes": {
+          "userIdIdx": {
+            "columns": ["userId"]
+          }
+        },
+        "relations": {
+          "user": {
+            "type": "one",
+            "table": "users",
+            "fields": ["userId"],
+            "references": ["id"]
+          }
+        }
+      },
+      "verificationTokens": {
+        "columns": {
+          "identifier": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "token": {
+            "type": "varchar",
+            "length": 255,
+            "notNull": true
+          },
+          "expires": {
+            "type": "timestamp",
+            "mode": "date",
+            "withTimezone": true,
+            "notNull": true
+          }
+        },
+        "indexes": {
+          "compoundKey": {
+            "columns": ["identifier", "token"],
+            "primaryKey": true
+          }
+        }
+      }
+    }
+  }
