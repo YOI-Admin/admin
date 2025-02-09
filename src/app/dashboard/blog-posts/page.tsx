@@ -1,21 +1,21 @@
 import { Sidebar } from "~/components/sidebar"
 import { Breadcrumbs } from "~/components/breadcrumbs"
-import { NewPostForm } from "~/components/new-post-form"
+import { BlogList } from "~/components/blog-list"
 
-export default function NewPost() {
+export default function BlogPosts() {
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Breadcrumbs
           items={[
-            { label: "Dashboard", href: "/" },
-            { label: "New Post", href: "/new-post" },
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Blog Posts", href: "/dashboard/blog-posts" },
           ]}
         />
         <div className="flex-1 p-8 overflow-auto">
-          <h2 className="text-3xl font-bold mb-6">Create New Post</h2>
-          <NewPostForm />
+          <h2 className="text-3xl font-bold mb-6">Blog Posts</h2>
+          <BlogList />
         </div>
       </div>
     </div>

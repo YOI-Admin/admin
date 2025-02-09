@@ -9,8 +9,8 @@ export default function Analytics() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Breadcrumbs
           items={[
-            { label: "Dashboard", href: "/" },
-            { label: "Analytics", href: "/analytics" },
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Analytics", href: "/dashboard/analytics" },
           ]}
         />
         <div className="flex-1 p-8 overflow-auto">
