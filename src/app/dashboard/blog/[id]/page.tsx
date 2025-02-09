@@ -9,8 +9,8 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Breadcrumbs
           items={[
-            { label: "Dashboard", href: "/" },
-            { label: "Blog Post Analytics", href: `/blog/${params.id}` },
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Blog Post Analytics", href: `/dashboard/blog/${params.id}` },
           ]}
         />
         <BlogPostAnalytics id={params.id} />
