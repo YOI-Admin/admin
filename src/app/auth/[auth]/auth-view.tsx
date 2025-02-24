@@ -1,7 +1,14 @@
 "use client";
 
 import { useCallback } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
+import type { ComponentType, ReactNode } from "react";
+
+const Link: ComponentType<{ href: string; to: string; className?: string; children: ReactNode }> = ({ href, children, ...props }) => (
+  <NextLink href={href} {...props}>
+    {children}
+  </NextLink>
+);
 import { usePathname, useRouter } from "next/navigation";
 
 import { AuthCard } from "@daveyplate/better-auth-ui";
