@@ -23,6 +23,9 @@
     "plugins": [{ "name": "next" }],
     "incremental": true,
 
+    /* Module Resolution */
+    "allowImportingTsExtensions": true,
+
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
