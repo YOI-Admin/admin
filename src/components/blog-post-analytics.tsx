@@ -19,7 +19,7 @@ const mockTimeSeriesData = [
 ]
 
 export function BlogPostAnalytics({ id }: { id: string }) {
-  const blogPost = mockBlogData[id as keyof typeof mockBlogData]
+  const blogPost = mockBlogData[id as unknown as keyof typeof mockBlogData]
 
   if (!blogPost) {
     return <div>Blog post not found</div>
