@@ -1,5 +1,9 @@
 export default {
   plugins: {
-    tailwindcss: {},
+    tailwindcss: {
+      optimize: {
+        minify: false,
+      }
+    },
   },
 };
